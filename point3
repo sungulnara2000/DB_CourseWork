@@ -1,0 +1,75 @@
+create database db;
+
+create table  person (
+  person_id INT,
+  first_nm VARCHAR(30),
+  middle_nm VARCHAR(30),
+  last_nm VARCHAR(30),
+  gender_cd INT,
+  birth_date DATE,
+  marital_status_cd INT,
+  english_proficiency_cd INT,
+  education_degree_cd INT,
+  education INT,
+  military_accounting INT
+);
+
+create table employee (
+  employee_id INT,
+person_id INT,
+org_unit_id INT,
+position_id INT,
+nature_of_work_cd INT,
+type_of_work_cd INT,
+receipt_dt DATE,
+dismissal_dt DATE
+);
+
+create table vacancy (
+  vacancy_id INT,
+  org_unit_id INT,
+  position_id INT,
+  vacancy_cnt INT
+);
+
+create table applicant (
+  person_id INT,
+  vacancy_id INT
+);
+
+create table org_unit (
+  org_unit_id INT,
+  org_unit_nm INT,
+  type_cd INT,
+  address VARCHAR(50),
+  hierarchy_level INT
+);
+
+create table org_unit_x_org_unit (
+  parentt_id INT,
+  child_id INT
+);
+
+create table position (
+  position_id INT,
+  position_nm VARCHAR(30)
+);
+
+create table base_salary (
+  org_unit_id INT,
+  position_id INT,
+  salary_amt INT
+);
+
+create table allowance (
+  allowance_id INT,
+  allowance_nm INT,
+  allowance_amt INT
+);
+
+create table employee_x_allowance (
+  employee_id INT,
+  allowance_is INT
+);
+
+
