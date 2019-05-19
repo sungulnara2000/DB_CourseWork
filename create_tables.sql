@@ -1,4 +1,15 @@
-create table person (
+drop table if exists person cascade;
+drop table if exists allowance cascade;
+drop table if exists applicant cascade;
+drop table if exists base_salary cascade;
+drop table if exists employee cascade;
+drop table if exists employee_x_allowance cascade;
+drop table if exists org_unit cascade;
+drop table if exists org_unit_x_org_unit cascade;
+drop table if exists position cascade;
+drop table if exists vacancy cascade;
+
+create table if not exists person (
   person_id int PRIMARY KEY ,
   first_nm varchar(30) NOT NULL,
   middle_nm varchar(30) NOT NULL,
@@ -12,7 +23,7 @@ create table person (
   education varchar(100)
 );
 
-create table org_unit (
+create table if not exists org_unit (
   org_unit_id int PRIMARY KEY,
   org_unit_nm varchar(30),
   type_cd int, CHECK ( type_cd>=0 and type_cd<=5 ), -- бухгалтерия, цех, бригада, отдел кадров, управление
@@ -20,13 +31,13 @@ create table org_unit (
   hierarchy_level int, CHECK ( hierarchy_level>=0 )
 );
 
-create table position (
+create table if not exists position (
   position_id int PRIMARY KEY,
   position_nm varchar(20)
 );
 
 
-create table employee (
+create table if not exists employee (
   employee_id int PRIMARY KEY,
   person_id int, FOREIGN KEY (person_id) REFERENCES person(person_id),
   org_unit_id int, FOREIGN KEY (org_unit_id) REFERENCES org_unit(org_unit_id),
@@ -36,38 +47,38 @@ create table employee (
   receipt_dt date
 );
 
-create table vacancy (
+create table if not exists vacancy (
   vacancy_id int PRIMARY KEY,
   org_unit_id int, FOREIGN KEY (org_unit_id) REFERENCES org_unit(org_unit_id),
   position_id int, FOREIGN KEY (position_id) REFERENCES position(position_id),
   vacancy_cnt int DEFAULT 0
 );
 
-create table applicant (
+create table if not exists applicant (
   person_id int, FOREIGN KEY (person_id) REFERENCES person(person_id),
   vacancy_id int, FOREIGN KEY (vacancy_id) REFERENCES vacancy(vacancy_id),
   PRIMARY KEY (person_id, vacancy_id)
 );
 
-create table org_unit_x_org_unit (
+create table if not exists org_unit_x_org_unit (
   parent_id int, FOREIGN KEY (parent_id) REFERENCES org_unit(org_unit_id),
   child_id int, FOREIGN KEY (parent_id) REFERENCES org_unit(org_unit_id),
   PRIMARY KEY (parent_id, child_id)
 );
 
-create table base_salary (
+create table if not exists base_salary (
   org_unit_id int, FOREIGN KEY (org_unit_id) REFERENCES org_unit(org_unit_id),
   position_id int, FOREIGN KEY (position_id) REFERENCES position(position_id),
   salary_amt int, CHECK ( salary_amt>=11163 ) -- больше прожиточного минимума
 );
 
-create table allowance (
+create table if not exists allowance (
   allowance_id int PRIMARY KEY,
-  allowance_nm varchar(30),
+  allowance_nm varchar(50),
   allowance_amt int, CHECK ( allowance_amt>=0 )
 );
 
-create table employee_x_allowance (
+create table if not exists employee_x_allowance (
   employee_id int, FOREIGN KEY (employee_id) REFERENCES employee(employee_id),
   allowance_id int, FOREIGN KEY (allowance_id) REFERENCES allowance(allowance_id),
   PRIMARY KEY (employee_id, allowance_id)
