@@ -39,4 +39,32 @@ order by (base_salary.salary_amt) desc
 
 
 /* ваканси, на которые никто не подается */
-select vacancy.
+select vacancy.vacancy_id
+  from vacancy
+    where vacancy_id not in (
+      select vacancy_id
+        from applicant
+      );
+
+select v.vacancy_id, v.vacancy_cnt, a.person_id
+  from vacancy v
+  left join applicant a
+    on v.vacancy_id = a.vacancy_id;
+
+select count(person_id)
+      from applicant
+    group by(vacancy_id)
+
+select v.vacancy_id, v.vacancy_cnt
+  from vacancy v
+  left join applicant a
+    on v.vacancy_id = a.vacancy_id
+  where v.vacancy_cnt > (
+    select count(person_id)
+      from applicant
+    group by(v.vacancy_id)
+    );
+
+select count(person_id)
+from applicant
+group by(vacancy_id)
