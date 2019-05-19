@@ -21,7 +21,6 @@ create or replace view view_person as (
   from person
 );
 
-select * from view_person;
 
 create or replace view view_employee as (
   select (p.middle_nm || ' ' || p.first_nm || ' ' || p.last_nm) as ФИО,
@@ -45,7 +44,6 @@ create or replace view view_employee as (
     on e.position_id = pos.position_id
 );
 
-select * from view_employee;
 
 create or replace view view_vacancy as (
   select ou.org_unit_nm as Отдел,
@@ -58,7 +56,6 @@ create or replace view view_vacancy as (
     on v.position_id = p.position_id
 );
 
-select * from view_vacancy;
 
 create or replace view view_org_unit as (
   select org_unit_nm as Название,
@@ -71,5 +68,22 @@ create or replace view view_org_unit as (
   from org_unit
 );
 
-select * from view_org_unit;
+
+create or replace view view_base_salary as (
+  select ou.org_unit_nm as Отдел,
+         p.position_nm as Должность,
+         b.salary_amt as Размер
+  from base_salary b
+  inner join org_unit ou
+    on b.org_unit_id = ou.org_unit_id
+  inner join position p
+    on b.position_id = p.position_id
+);
+
+
+create or replace view view_allowanse as (
+  select allowance_nm as Причина,
+         allowance_amt as Размер
+  from allowance
+);
 
