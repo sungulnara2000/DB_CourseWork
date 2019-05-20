@@ -35,7 +35,7 @@ select base_salary.salary_amt Зарплата, org_unit.org_unit_nm Отдел,
   from base_salary, org_unit, position
     where org_unit.org_unit_id = base_salary.org_unit_id
     and position.position_id = base_salary.position_id
-order by (base_salary.salary_amt) desc
+order by (base_salary.salary_amt) desc;
 
 
 /* ваканси, на которые никто не подается */
