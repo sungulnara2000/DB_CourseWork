@@ -28,10 +28,10 @@ delete from allowance
 where allowance.allowance_id <> all (
   select allowance_id
   from employee_x_allowance
-  )
+  );
 
 
-insert into person values (14, 'Осокин', 'Егор', 'Маратович', 0, '2000-04-26', 0, 'B2', 1,
+insert into person values (14, 'Осокин', 'Егор', 'Маратович', 0, '2001-12-26', 0, 'B2', 1,
                            'Лицей Иннополис');
 
 select (middle_nm || ' ' || first_nm) as Женщина_я_не_танцую
