@@ -1,5 +1,5 @@
 /* вывести всех мужчин и их отношение к военной
-обязанности по возрасту, а также возраст*/
+обязанности(по возрасту), а также возраст*/
 select (middle_nm || ' ' || first_nm || ' ' || last_nm) as Имя,
        date_part('year', age(current_date, birth_date)) as Возраст,
           case
@@ -30,7 +30,8 @@ select (p.middle_nm || ' ' || p.first_nm || ' ' || p.last_nm) as ФИО,
     on e.person_id = p.person_id
   where allow.employee_id = e.employee_id;
 
-
+/* Зарплата в порядке убывания, а также должность и подразделение,
+ где таковую получают */
 select base_salary.salary_amt Зарплата, org_unit.org_unit_nm Отдел, position.position_nm Должность
   from base_salary, org_unit, position
     where org_unit.org_unit_id = base_salary.org_unit_id

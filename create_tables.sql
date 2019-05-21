@@ -10,7 +10,7 @@ drop table if exists position cascade;
 drop table if exists vacancy cascade;
 
 create table if not exists person (
-  person_id int PRIMARY KEY ,
+  person_id SERIAL PRIMARY KEY ,
   first_nm varchar(30) NOT NULL,
   middle_nm varchar(30) NOT NULL,
   last_nm varchar(30),
@@ -24,22 +24,22 @@ create table if not exists person (
 );
 
 create table if not exists org_unit (
-  org_unit_id int PRIMARY KEY,
+  org_unit_id SERIAL PRIMARY KEY,
   org_unit_nm varchar(30),
-  type_cd int, CHECK ( type_cd>=0 and type_cd<=5 ), -- бухгалтерия, цех, бригада, отдел кадров, управление
+  type_cd int, CHECK ( type_cd>=0 and type_cd<=2 ), -- цех, НГДУ, управление
   address varchar(50),
   hierarchy_level int, CHECK ( hierarchy_level>=0 )
 );
 
 create table if not exists position (
-  position_id int PRIMARY KEY,
+  position_id SERIAL PRIMARY KEY,
   position_nm varchar(20)
 );
 
 
 create table if not exists employee (
-  employee_id int PRIMARY KEY,
-  person_id int, FOREIGN KEY (person_id) REFERENCES person(person_id),
+  employee_id SERIAL PRIMARY KEY,
+  person_id int, FOREIGN KEY (person_id) REFERENCES person(person_id) ON DELETE CASCADE,
   org_unit_id int, FOREIGN KEY (org_unit_id) REFERENCES org_unit(org_unit_id),
   position_id int, FOREIGN KEY (position_id) REFERENCES position(position_id),
   nature_of_work_cd int CHECK ( nature_of_work_cd>=0 and nature_of_work_cd<=1 ), -- постоянно/временно
@@ -48,7 +48,7 @@ create table if not exists employee (
 );
 
 create table if not exists vacancy (
-  vacancy_id int PRIMARY KEY,
+  vacancy_id SERIAL PRIMARY KEY,
   org_unit_id int, FOREIGN KEY (org_unit_id) REFERENCES org_unit(org_unit_id),
   position_id int, FOREIGN KEY (position_id) REFERENCES position(position_id),
   vacancy_cnt int DEFAULT 0
@@ -69,13 +69,13 @@ create table if not exists org_unit_x_org_unit (
 create table if not exists base_salary (
   org_unit_id int, FOREIGN KEY (org_unit_id) REFERENCES org_unit(org_unit_id),
   position_id int, FOREIGN KEY (position_id) REFERENCES position(position_id),
-  salary_amt int, CHECK ( salary_amt>=11163 ) -- больше прожиточного минимума
+  salary_amt int, CHECK ( salary_amt >= 11163 ) -- больше прожиточного минимума
 );
 
 create table if not exists allowance (
-  allowance_id int PRIMARY KEY,
+  allowance_id SERIAL PRIMARY KEY,
   allowance_nm varchar(50),
-  allowance_amt int, CHECK ( allowance_amt>=0 )
+  allowance_amt int, CHECK ( allowance_amt>0 )
 );
 
 create table if not exists employee_x_allowance (
