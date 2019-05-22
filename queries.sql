@@ -41,11 +41,15 @@ order by (base_salary.salary_amt) desc;
 
 /* ваканси, на которые никто не подается */
 with ins as (
-  select v.vacancy_id, v.vacancy_cnt, a.person_id
+  select v.vacancy_id, v.position_id, v.org_unit_id, v.vacancy_cnt, a.person_id
   from vacancy v
   left join applicant a
     on v.vacancy_id = a.vacancy_id)
-select vacancy_id
+select vacancy_id, position.position_nm, org_unit.org_unit_nm
   from ins
+    left join position
+      on ins.position_id = position.position_id
+    left join org_unit
+      on ins.org_unit_id = org_unit.org_unit_id
   where person_id isnull;
 
