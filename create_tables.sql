@@ -17,7 +17,7 @@ create table if not exists person (
   gender_cd int CHECK ( gender_cd >= 0 and  gender_cd <=1), -- мужчина/женщина
   birth_date date,
   marital_status_cd int CHECK ( marital_status_cd >= 0 and  marital_status_cd <=2), -- в браке/не в браке/разведен
-  english_proficiency_cd varchar(2) CHECK ( english_proficiency_cd like '__'), -- A1, A2, B1, B2, C1, C2
+  english_proficiency_cd varchar(2) CHECK ( english_proficiency_cd similar to '(A|B|C)(1|2|3)'), -- A1, A2, B1, B2, C1, C2
   education_degree_cd int CHECK ( education_degree_cd >= 0 and  education_degree_cd <=4),
   -- профессиональная переподготовка, начальное профессиональное, среднее профессиональное, среднее общее, высшее
   education varchar(100)
