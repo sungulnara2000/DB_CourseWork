@@ -53,3 +53,61 @@ select vacancy_id, position.position_nm, org_unit.org_unit_nm
       on ins.org_unit_id = org_unit.org_unit_id
   where person_id isnull;
 
+
+select first_nm from person;
+analyse person;
+explain (analyse ) select first_nm from person where middle_nm = 'Кучер';
+
+create index on person(lower(middle_nm));
+select first_nm from person where lower(middle_nm) = 'кучер';
+explain (analyse ) select * from person where lower(middle_nm) like 'а%';
+
+create table test (id serial primary key, i int4);
+
+insert into test (i) select random() * 1000000000 from generate_series(1,100000);
+
+vacuum analyze test;
+explain analyze select id from test order by id asc limit 10;
+explain analyze select id from test;
+create index on test(i);
+explain analyze select * from test where i < 100000;
+
+drop index test_i_idx;
+EXPLAIN (ANALYZE) SELECT * FROM test ORDER BY i;
+
+CREATE TABLE foo (c1 integer, c2 text);
+INSERT INTO foo
+SELECT
+i
+, md5(random()::text)
+FROM
+generate_series(1, 1000000) AS i;
+
+select *from foo;
+
+CREATE TABLE bar (c1 integer, c2 boolean);
+INSERT INTO bar
+SELECT
+i
+, i % 2 = 1
+FROM
+generate_series(1, 500000) AS i;
+ANALYZE bar;
+select * from bar;
+analyse foo;
+
+EXPLAIN (ANALYZE) SELECT * FROM foo JOIN bar ON foo.c1 = bar.c1;
+
+CREATE VIEW v_test
+AS SELECT 'Hello World';
+
+select * from v_test1;
+
+CREATE or replace VIEW v_test1 AS SELECT 'Hello World'::text AS hello;
+
+WITH RECURSIVE t(n) AS (
+VALUES (1)
+UNION ALL
+SELECT n+1 FROM t WHERE n < 100
+)
+SELECT * FROM t;

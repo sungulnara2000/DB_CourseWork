@@ -53,4 +53,3 @@ where first_nm = 'Осокин' and middle_nm = 'Егор';
 /* удалим всех людей, чей возрасть меньше 18 */
 delete from person
 where date_part('year', age(current_date, birth_date)) < 18;
-
